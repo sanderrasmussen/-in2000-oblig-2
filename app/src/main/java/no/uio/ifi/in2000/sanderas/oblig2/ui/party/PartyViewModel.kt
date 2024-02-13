@@ -12,7 +12,7 @@ import no.uio.ifi.in2000.sanderas.oblig2.data.alpacas.AlpacaPartiesRepository
 import no.uio.ifi.in2000.sanderas.oblig2.model.alpacas.PartyInfo
 
 data class PartyUIState(
-    val party: PartyInfo = PartyInfo("","","","","","")//et tomt default object
+    val party: PartyInfo = PartyInfo("","","","","#FFFFFF","")//et tomt default object
 )
 class PartyViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
