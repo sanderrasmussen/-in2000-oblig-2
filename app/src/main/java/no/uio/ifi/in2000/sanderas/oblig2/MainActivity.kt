@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                             arguments = listOf(navArgument("PartyId") { type = NavType.StringType })
                         ) { navBackStackEntry ->
                             val partyId = navBackStackEntry.arguments?.getString("PartyId")
-                            PartyScreen.partyScreen(partyId)
+                            PartyScreen.partyScreen(partyId, navController= navController)
                         }
                     }
                 }
