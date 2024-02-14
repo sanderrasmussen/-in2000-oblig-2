@@ -6,16 +6,13 @@ import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import no.uio.ifi.in2000.sanderas.oblig2.ui.home.District
 import no.uio.ifi.in2000.sanderas.oblig2.ui.home.DistrictVotes
+import no.uio.ifi.in2000.sanderas.oblig2.ui.home.voteList
 
 //fetch data from district 1 and 2
-@Serializable
-data class vote(val id : String)
-@Serializable
-data class voteList(val list : List<vote>)
+
 class IndividualVotesDataSource {
     suspend fun getIndividualVotesFromAPI(): List<DistrictVotes> {
 
