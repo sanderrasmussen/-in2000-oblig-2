@@ -12,18 +12,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Card
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,15 +25,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import no.uio.ifi.in2000.sanderas.oblig2.model.alpacas.PartyInfo
-
 
 
 class PartyScreen {
@@ -52,13 +43,23 @@ class PartyScreen {
         val partyUIState by PartyViewModel.partyUIState.collectAsState()
         //val Id: String = Id ?: "0" //standardverdi på string i tillfelle den er null
 
+
+
+
         LazyColumn(
+
             modifier = Modifier
                 .fillMaxSize()
                 .padding(20.dp)
                 .fillMaxSize(),
         ) {
             item {
+
+                TopAppBar(
+                    onBackClick = { navController.navigate("HomeScreen") },
+                    title = partyUIState.party.name)
+            }
+            item{
                 PartyCard(party = partyUIState.party)
 
             }
@@ -98,24 +99,24 @@ class PartyScreen {
 
         }
     }
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun SmallTopAppBarExample() {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        titleContentColor = MaterialTheme.colorScheme.primary,
-                    ),
-                    title = {
-                        Text("Small Top App Bar")
-                    }
-                )
+    fun TopAppBar(
+        onBackClick: () -> Unit,
+        title: String,
+    ) {
+        TopAppBar(
+            title = {
+                Text(text = title)
             },
-        ) { innerPadding ->
-            (innerPadding)
-        }
+            navigationIcon = {
+                IconButton(onClick = { onBackClick() }) {
+                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                }
+            }
+        )
     }
+
 }
 
 
