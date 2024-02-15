@@ -6,16 +6,13 @@ import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import no.uio.ifi.in2000.sanderas.oblig2.ui.home.District
 import no.uio.ifi.in2000.sanderas.oblig2.ui.home.DistrictVotes
+import no.uio.ifi.in2000.sanderas.oblig2.ui.home.vote
 
 //fetch data from district 1 and 2
-@Serializable
-data class vote(val id : String)
-@Serializable
-data class voteList(val list : List<vote>)
+
 class IndividualVotesDataSource {
     suspend fun getIndividualVotesFromAPI(): List<DistrictVotes> {
 
@@ -26,8 +23,8 @@ class IndividualVotesDataSource {
         }
 
 
-        val voteListDistrict1: voteList = client.get("https://www.uio.no/studier/emner/matnat/ifi/IN2000/v24/obligatoriske-oppgaver/district1.json").body()
-        val voteListDistrict2: voteList = client.get("https://www.uio.no/studier/emner/matnat/ifi/IN2000/v24/obligatoriske-oppgaver/alpacaparties.json").body()
+        val voteListDistrict1: List<vote> = client.get("https://www.uio.no/studier/emner/matnat/ifi/IN2000/v24/obligatoriske-oppgaver/district1.json").body()
+        val voteListDistrict2: List<vote> = client.get("https://www.uio.no/studier/emner/matnat/ifi/IN2000/v24/obligatoriske-oppgaver/district2.json").body()
         client.close()
 
         val District1Reslult : List<DistrictVotes> = lagDistrictVotesListe(voteListDistrict1, "1")
@@ -38,14 +35,14 @@ class IndividualVotesDataSource {
     }
 
     //spagethi kode under her
-    fun lagDistrictVotesListe(DistrictVotes: voteList, districtId : String) : List<DistrictVotes>{
+    fun lagDistrictVotesListe(DistrictVotes: List<vote>, districtId : String) : List<DistrictVotes>{
         var party1 :Int = 0 //number og votes
         var party2 :Int = 0
         var party3 :Int = 0
         var party4 :Int = 0
 
 
-        DistrictVotes.list.forEach{
+        DistrictVotes.forEach{
             if (it.id == "1"){party1+=1}
             else if (it.id == "2"){party2+=1}
             else if (it.id == "3"){party3+=1}

@@ -37,9 +37,12 @@ class HomeScreen {
     fun homeScreen(homeScreenViewModel: HomeScreenViewModel = viewModel(), navController: NavController) {
         val partiesUIState by homeScreenViewModel.partiesUIState.collectAsState()
 
+        val votesUIState by homeScreenViewModel.votesUIState.collectAsState()
+
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .padding(20.dp)
                 .fillMaxSize(),
         ) {
@@ -47,6 +50,10 @@ class HomeScreen {
                 Modifier.size(96.dp)
                     AlpacaCard(party = party, navController = navController)
                 }
+            item {
+                VoteListPreview()
+                showVoteList(votelist = votesUIState.votes)
+            }
             }
         }
         }
