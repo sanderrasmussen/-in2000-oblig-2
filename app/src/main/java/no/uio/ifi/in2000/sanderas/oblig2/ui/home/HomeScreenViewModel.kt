@@ -37,7 +37,7 @@ class HomeScreenViewModel : ViewModel() {
             }
             _votesUIState.update {
                 it.copy(
-                    votes = repository.CountAllDistrictVotes(listOf("1","2","3","4"))
+                    votes = repository.CountAllDistrictVotes(listOf("1","2","3","4"))//OOPS ID = 4 VIRKER IKKE
                 )
             }
         }
