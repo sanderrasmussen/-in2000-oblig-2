@@ -28,19 +28,46 @@ class HomeScreenViewModel : ViewModel() {
     private val _votesUIState = MutableStateFlow(VotesUIState())
     val votesUIState : StateFlow<VotesUIState> = _votesUIState.asStateFlow()
 
-    init {
+    private var _ErrorStateFlow = MutableStateFlow(false)
+    var ErrorStateFlow: StateFlow<Boolean> = _ErrorStateFlow
+
+
+    fun byttDistrict(district : String) {
         viewModelScope.launch {
-            _partiesUIState.update {
-                it.copy(
-                    parties = repository.getPartyInfoList()
-                )
+            try {
+                _votesUIState.update {
+                    it.copy(
+                        votes = repository.getVotesFromDistrict(
+                            district,
+                            listOf("1", "2", "3", "4")
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                _ErrorStateFlow.update { true }
             }
-            _votesUIState.update {
-                it.copy(
-                    votes = repository.CountAllDistrictVotes(listOf("1","2","3","4"))//OOPS ID = 4 VIRKER IKKE
-                )
+
+        }
+    }
+        init {
+            viewModelScope.launch {
+                try {
+                    _partiesUIState.update {
+                        it.copy(
+                            parties = repository.getPartyInfoList()
+                        )
+                    }
+                    _votesUIState.update {
+                        it.copy(
+                            votes = repository.getVotesFromDistrict("All", listOf("1", "2", "3", "4")
+                        ))
+                    }
+                }
+                catch (e :Exception){
+                    _ErrorStateFlow.update { true }
+                }
             }
         }
     }
-}
+
 

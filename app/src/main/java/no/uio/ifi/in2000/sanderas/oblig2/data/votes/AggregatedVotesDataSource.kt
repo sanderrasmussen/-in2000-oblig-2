@@ -12,13 +12,13 @@ import no.uio.ifi.in2000.sanderas.oblig2.ui.home.District
 import no.uio.ifi.in2000.sanderas.oblig2.ui.home.DistrictVotes
 
 @Serializable
-data class parties(
+data class Party(
     val partyId : String,
     val votes : Int
 )
-"""
+
 @Serializable
-data class partiesList(val list : List<parties>)"""
+data class Parties(val parties : List<Party>)
 class AggregatedVotesDataSource {
 
     suspend fun getAggregatedVotesFromAPI(): List<DistrictVotes> {
@@ -30,17 +30,17 @@ class AggregatedVotesDataSource {
         }
 
 
-        val partiesResult: partiesList = client.get("https://www.uio.no/studier/emner/matnat/ifi/IN2000/v24/obligatoriske-oppgaver/district3.json").body()
+        val partiesResult: Parties = client.get("https://www.uio.no/studier/emner/matnat/ifi/IN2000/v24/obligatoriske-oppgaver/district3.json").body()
         client.close()
 
         return makeDistrictVoteList(partiesResult)
 
     }
 
-    fun makeDistrictVoteList(list: partiesList): List<DistrictVotes>{
+    fun makeDistrictVoteList(list: Parties): List<DistrictVotes>{
         //lage DistrictVotes objecter
         var returnList : List<DistrictVotes> = emptyList()
-        list.list.forEach{
+        list.parties.forEach{
             val el = DistrictVotes(District.DISTRICT_3, it.partyId, it.votes)
             returnList= returnList + el
         }

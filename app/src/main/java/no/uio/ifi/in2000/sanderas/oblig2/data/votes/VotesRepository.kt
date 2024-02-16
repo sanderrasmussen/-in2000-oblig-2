@@ -17,10 +17,19 @@ class VotesRepository {
                 }
             }
         }
-        else {
-            val districtVotes : List<DistrictVotes> = individualVotesDataSource.getIndividualVotesFromAPI()
+        else if (district=="1") {
+            val districtVotes : List<DistrictVotes> = individualVotesDataSource.getIndividualVotesFromAPIdistrict1()
             districtVotes.forEach{
                 if (it.alpacaPartyId==id){
+                    return it
+                }
+            }
+        }
+        else if (district=="2") {
+            val districtVotes: List<DistrictVotes> =
+                individualVotesDataSource.getIndividualVotesFromAPIdistrict2()
+            districtVotes.forEach {
+                if (it.alpacaPartyId == id) {
                     return it
                 }
             }

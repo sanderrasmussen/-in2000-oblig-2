@@ -44,5 +44,22 @@ class AlpacaPartiesRepository {
 
         return PartiesResults(returnList)
     }
+    suspend fun getVotesFromDistrict(District : String, listOfParties : List<String>) : PartiesResults {
+        var returnList: List<partyResult> = listOf()
 
+        if (District=="All"){
+            return CountAllDistrictVotes(listOfParties)
+        }
+
+        listOfParties.forEach {
+            val district = votesRepository.getPartyVoteFromDistrict(it, District)
+
+
+            val totalCount = district.numberOfVotesForParty
+            val partyName = getPartyInfo(it).name
+            returnList = returnList + partyResult(partyName, totalCount)
+        }
+        return PartiesResults(returnList)
+
+    }
 }

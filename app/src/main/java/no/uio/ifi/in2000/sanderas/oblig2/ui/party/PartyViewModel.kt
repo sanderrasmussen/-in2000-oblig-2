@@ -24,12 +24,20 @@ class PartyViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
     private val _partyUIState = MutableStateFlow(PartyUIState())
     val partyUIState: StateFlow<PartyUIState> = _partyUIState.asStateFlow()
 
+    private var _ErrorStateFlow = MutableStateFlow(false)
+    var ErrorStateFlow: StateFlow<Boolean> = _ErrorStateFlow
+
     init {
         viewModelScope.launch {
-            _partyUIState.update {
-                it.copy(
-                    party = repository.getPartyInfo(Id)
-                )
+            try {
+                _partyUIState.update {
+                    it.copy(
+                        party = repository.getPartyInfo(Id)
+                    )
+                }
+            }
+            catch (e :Exception){
+                _ErrorStateFlow.update { true }
             }
         }
     }
